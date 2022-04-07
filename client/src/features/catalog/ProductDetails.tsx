@@ -34,7 +34,11 @@ export default function ProductDeatils() {
   return (
     <Grid container>
       <Grid item xs={3}>
-        <img src={product.pictureUrl} alt={product.name} />
+        <img src={product.pictureUrl} alt={product.name}
+                  style={{
+                    maxWidth: "100%",
+                  }}
+        />
       </Grid>
 
       <Grid item xs={6}>
