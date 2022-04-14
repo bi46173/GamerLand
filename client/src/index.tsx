@@ -5,12 +5,13 @@ import App from "./app/layout/App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { CustomBrowserRouter, customHistory } from "./app/layout/CustomBrowserRouter";
+import { StoreProvider } from "./app/context/StoreContext";
 
 
 ReactDOM.render(
   <React.StrictMode>
     <CustomBrowserRouter basename={undefined}>
-      <App />
+      <StoreProvider><App /></StoreProvider>
     </CustomBrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
