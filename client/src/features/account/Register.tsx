@@ -6,30 +6,34 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Paper } from "@mui/material";
-import { Link, useLocation } from "react-router-dom";
-import { FieldValues, useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import { LoadingButton } from "@mui/lab";
+import agent from "../../app/api/agent";
+import { toast } from "react-toastify";
 import { customHistory } from "../../app/layout/CustomBrowserRouter";
-import { useAppDispatch } from "../../app/store/configureStore";
-import { signInUser } from "./accountSlice";
 
-export default function Login() {
-  const dispatch = useAppDispatch();
-  const location: any = useLocation();
+export default function Register() {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { isSubmitting, errors, isValid },
   } = useForm({
     mode: "all",
   });
 
-  async function submitForm(data: FieldValues) {
-    try {
-      await dispatch(signInUser(data));
-      customHistory.push(location.state?.from.pathname || "/catalog");
-    } catch (error) {
-      console.log(error);
+  function handleApiErrors(errors: any) {
+    if (errors) {
+      errors.forEach((error: any) => {
+        if (error.includes("Password")) {
+          setError("password", { message: error });
+        } else if (error.includes("Email")) {
+          setError("email", { message: error });
+        } else if (error.includes("Username")) {
+          setError("username", { message: error });
+        }
+      });
     }
   }
 
@@ -48,11 +52,20 @@ export default function Login() {
         <LockOutlinedIcon />
       </Avatar>
       <Typography component="h1" variant="h5">
-        Sign in
+        Register
       </Typography>
       <Box
         component="form"
-        onSubmit={handleSubmit(submitForm)}
+        onSubmit={handleSubmit((data) =>
+          agent.Account.register(data)
+            .then(() => {
+              toast.success("Registration successful - you can now login");
+              customHistory.push("/login");
+            })
+            .catch((error) => {
+              handleApiErrors(error);
+            })
+        )}
         noValidate
         sx={{ mt: 1 }}
       >
@@ -68,9 +81,30 @@ export default function Login() {
         <TextField
           margin="normal"
           fullWidth
+          label="Email address"
+          {...register("email", {
+            required: "Email is required",
+            pattern: {
+              value: /^\w+[\w-.]*@\w+((-\w+)|(\w*))\.[a-z]{2,3}$/,
+              message: "Not a valid email address",
+            },
+          })}
+          error={!!errors.email}
+          helperText={errors?.email?.message}
+        />
+        <TextField
+          margin="normal"
+          fullWidth
           label="Password"
           type="password"
-          {...register("password", { required: "Password is required" })}
+          {...register("password", {
+            required: "Password is required",
+            pattern: {
+              value:
+                /(?=^.{6,10}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\s).*$/,
+              message: "Password does not meet complexity requirements",
+            },
+          })}
           error={!!errors.password}
           helperText={errors?.password?.message}
         />
@@ -83,11 +117,11 @@ export default function Login() {
           variant="contained"
           sx={{ mt: 3, mb: 2 }}
         >
-          Sign In
+          Register
         </LoadingButton>
         <Grid container>
           <Grid item>
-            <Link to="/register">{"Don't have an account? Sign Up"}</Link>
+            <Link to="/login">{"Already have an account? Sign In"}</Link>
           </Grid>
         </Grid>
       </Box>

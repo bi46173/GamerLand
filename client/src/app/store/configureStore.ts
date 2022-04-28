@@ -1,3 +1,4 @@
+import { accountSlice } from "./../../features/account/accountSlice";
 import { catalogSlice } from "./../../features/catalog/catalogSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import { counterSlice } from "../../features/contact/counterSlice";
@@ -13,6 +14,7 @@ export const store = configureStore({
     counter: counterSlice.reducer,
     basket: basketSlice.reducer,
     catalog: catalogSlice.reducer,
+    account: accountSlice.reducer,
   },
 });
 
