@@ -5,10 +5,13 @@ export interface BasketItem {
     pictureUrl: string;
     type: string;
     quantity: number;
-}
-
-export interface Basket {
+  }
+  
+  export interface Basket {
     id: number;
     buyerId: string;
     items: BasketItem[];
-}
+    paymentIntentId?: string;
+    clientSecret?: string;
+  }
+  

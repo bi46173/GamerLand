@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20220501140106_OrderEntityAdded")]
-    partial class OrderEntityAdded
+    [Migration("20220503193349_PaymentIntentAdded")]
+    partial class PaymentIntentAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,6 +29,12 @@ namespace API.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("BuyerId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClientSecret")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentIntentId")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -79,6 +85,9 @@ namespace API.Data.Migrations
 
                     b.Property<int>("OrderStatus")
                         .HasColumnType("int");
+
+                    b.Property<string>("PaymentIntentId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("Subtotal")
                         .HasColumnType("bigint");
@@ -182,14 +191,14 @@ namespace API.Data.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "df277410-ada4-406e-b788-b7881fa36f82",
+                            ConcurrencyStamp = "275aa9b3-70ae-47e2-85b0-fbaf586505d0",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "b8830a3f-7f59-4757-834b-375e662b882f",
+                            ConcurrencyStamp = "4d4b812a-1e71-43ea-a909-29c42e90628f",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
