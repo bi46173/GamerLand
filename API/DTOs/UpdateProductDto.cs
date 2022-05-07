@@ -1,23 +1,34 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
-namespace API.Entities
+namespace API.DTOs
 {
-    public class Product
+    public class UpdateProductDto
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Information1 { get; set; }
-        public string Information2 { get; set; }
-        public string Information3 { get; set; }
-        public string Information4 { get; set; }
-        public long Price { get; set; } // Stripe uses this,for future implementation,also SQLite doesn't recognize decimals
-        public string PictureUrl { get; set; }
-        public string Type { get; set; }
-        public int QuantityInStock { get; set; }
 
-        public string PublicId { get; set; }
+        public int Id { get; set; }
+        [Required]
+        public string Name { get; set; }
+        [Required]
+        public string Information1 { get; set; }
+        [Required]
+        public string Information2 { get; set; }
+        [Required]
+        public string Information3 { get; set; }
+        [Required]
+        public string Information4 { get; set; }
+        [Required]
+        [Range(100,Double.PositiveInfinity)]
+        public long Price { get; set; }
+        public IFormFile File { get; set; }
+        [Required]
+        public string Type { get; set; }
+        [Required]
+        [Range(0,200)]
+        public int QuantityInStock { get; set; }
     }
 }

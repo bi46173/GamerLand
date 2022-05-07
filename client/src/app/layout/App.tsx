@@ -25,6 +25,7 @@ import Register from "../../features/account/Register";
 import PrivateRoute from "./PrivateRoute";
 import Orders from "../../features/orders/Orders";
 import CheckoutWrapper from "../../features/checkout/CheckoutWrapper";
+import Inventory from "../../features/admin/Inventory";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -73,11 +74,23 @@ function App() {
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/server-error" element={<ServerError />} />
             <Route path="/basket" element={<BasketPage />} />
-            <Route path="/checkout" element={<PrivateRoute />}>
+            <Route
+              path="/checkout"
+              element={<PrivateRoute roles={["Member", "Admin"]} />}
+            >
               <Route path="/checkout" element={<CheckoutWrapper />} />
             </Route>
-            <Route path="/orders" element={<PrivateRoute />}>
+            <Route
+              path="/orders"
+              element={<PrivateRoute roles={["Member", "Admin"]} />}
+            >
               <Route path="/orders" element={<Orders />} />
+            </Route>
+            <Route
+              path="/inventory"
+              element={<PrivateRoute roles={["Admin"]} />}
+            >
+              <Route path="/inventory" element={<Inventory />} />
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
