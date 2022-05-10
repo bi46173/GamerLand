@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace API.Data.Migrations
 {
-    public partial class OrderEntityAdded : Migration
+    public partial class ContactsEntity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -54,11 +54,29 @@ namespace API.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    BuyerId = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    BuyerId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PaymentIntentId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClientSecret = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Baskets", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Contacts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Subject = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ContactDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Contacts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -78,7 +96,8 @@ namespace API.Data.Migrations
                     OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Subtotal = table.Column<long>(type: "bigint", nullable: false),
                     DeliveryFee = table.Column<long>(type: "bigint", nullable: false),
-                    OrderStatus = table.Column<int>(type: "int", nullable: false)
+                    OrderStatus = table.Column<int>(type: "int", nullable: false),
+                    PaymentIntentId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -99,7 +118,8 @@ namespace API.Data.Migrations
                     Price = table.Column<long>(type: "bigint", nullable: false),
                     PictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    QuantityInStock = table.Column<int>(type: "int", nullable: false)
+                    QuantityInStock = table.Column<int>(type: "int", nullable: false),
+                    PublicId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -290,12 +310,12 @@ namespace API.Data.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { 1, "df277410-ada4-406e-b788-b7881fa36f82", "Member", "MEMBER" });
+                values: new object[] { 1, "6ae79d5c-6473-4b8b-8ffe-3680fe755818", "Member", "MEMBER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { 2, "b8830a3f-7f59-4757-834b-375e662b882f", "Admin", "ADMIN" });
+                values: new object[] { 2, "492ba31e-ec88-45fd-8291-7fd0c5d59f1c", "Admin", "ADMIN" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -371,6 +391,9 @@ namespace API.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "BasketItems");
+
+            migrationBuilder.DropTable(
+                name: "Contacts");
 
             migrationBuilder.DropTable(
                 name: "OrderItem");

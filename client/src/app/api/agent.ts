@@ -95,6 +95,7 @@ const Admin = {
   updateProduct: (product: any) =>
     requests.putForm("products", createFormData(product)),
   deleteProduct: (id: number) => requests.delete(`products/${id}`),
+  listContacts: () => requests.get("contacts"),
 };
 
 const Catalog = {
@@ -136,6 +137,11 @@ const Payments = {
   createPaymentIntent: () => requests.post("payments", {}),
 };
 
+const Contacts = {
+  createContact: (values: any) => requests.post("contacts", values),
+  deleteContact: (id: number) => requests.delete(`contacts/${id}`),
+};
+
 const agent = {
   Catalog,
   TestErrors,
@@ -144,6 +150,7 @@ const agent = {
   Orders,
   Payments,
   Admin,
+  Contacts,
 };
 
 export default agent;

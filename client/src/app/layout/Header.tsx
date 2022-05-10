@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { Link, NavLink } from "react-router-dom";
 import { useAppSelector } from "../store/configureStore";
+import AdminMenu from "./AdminMenu";
 import SignedInMenu from "./SignedInMenu";
 interface Props {
   darkMode: boolean;
@@ -43,6 +44,8 @@ export default function Header({ darkMode, handleThemeChange }: Props) {
   const { basket } = useAppSelector((state) => state.basket);
   const { user } = useAppSelector((state) => state.account);
   const itemCount = basket?.items.reduce((sum, item) => sum + item.quantity, 0);
+  const isAdmin = user?.roles?.includes("Admin");
+
   return (
     <AppBar position="static" sx={{ mb: 4 }}>
       <Toolbar
@@ -63,7 +66,10 @@ export default function Header({ darkMode, handleThemeChange }: Props) {
           </Typography>
           <Switch checked={darkMode} onChange={handleThemeChange} />
         </Box>
+
         <List sx={{ display: "flex" }}>
+          {isAdmin && <AdminMenu />}
+
           {midLinks.map(({ title, path }) => (
             <ListItem component={NavLink} to={path} key={path} sx={navStyles}>
               {title.toUpperCase()}

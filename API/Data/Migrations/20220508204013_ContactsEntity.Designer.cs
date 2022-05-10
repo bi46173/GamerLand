@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20220501140106_OrderEntityAdded")]
-    partial class OrderEntityAdded
+    [Migration("20220508204013_ContactsEntity")]
+    partial class ContactsEntity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,6 +29,12 @@ namespace API.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("BuyerId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClientSecret")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentIntentId")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -61,6 +67,30 @@ namespace API.Data.Migrations
                     b.ToTable("BasketItems");
                 });
 
+            modelBuilder.Entity("API.Entities.Contact", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("ContactDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Subject")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Contacts");
+                });
+
             modelBuilder.Entity("API.Entities.OrderAggregate.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -79,6 +109,9 @@ namespace API.Data.Migrations
 
                     b.Property<int>("OrderStatus")
                         .HasColumnType("int");
+
+                    b.Property<string>("PaymentIntentId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("Subtotal")
                         .HasColumnType("bigint");
@@ -139,6 +172,9 @@ namespace API.Data.Migrations
                     b.Property<long>("Price")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("PublicId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("QuantityInStock")
                         .HasColumnType("int");
 
@@ -182,14 +218,14 @@ namespace API.Data.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "df277410-ada4-406e-b788-b7881fa36f82",
+                            ConcurrencyStamp = "6ae79d5c-6473-4b8b-8ffe-3680fe755818",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "b8830a3f-7f59-4757-834b-375e662b882f",
+                            ConcurrencyStamp = "492ba31e-ec88-45fd-8291-7fd0c5d59f1c",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });

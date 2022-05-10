@@ -21,6 +21,8 @@ namespace API.Data
 
         public DbSet<Order> Orders { get; set;}
 
+        public DbSet<Contact> Contacts { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

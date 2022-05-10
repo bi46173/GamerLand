@@ -1,111 +1,72 @@
-import {
-  Alert,
-  AlertTitle,
-  Button,
-  ButtonGroup,
-  Container,
-  Divider,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-} from "@mui/material";
-import { useState } from "react";
+import types from "@emotion/styled";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { LoadingButton } from "@mui/lab";
+import { Box, Paper, Typography, Grid, Button } from "@mui/material";
+import { FieldValues, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import agent from "../../app/api/agent";
-import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
-import { decrement, increment } from "./counterSlice";
+import AppTextInput from "../../app/components/AppTextInput";
+import { customHistory } from "../../app/layout/CustomBrowserRouter";
+import { validationSchema } from "../contact/contactValidation";
 
 export default function ContactPage() {
-  const dispatch = useAppDispatch();
-  const { data, title } = useAppSelector((state) => state.counter);
-  const [validationErrors, setValidationErrors] = useState<string[]>([]);
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm({
+    resolver: yupResolver(validationSchema),
+  });
 
-  function getValidationError() {
-    agent.TestErrors.getValidationError()
-      .then(() => console.log("should not see this"))
-      .catch((error) => setValidationErrors(error));
+  async function handleSubmitData(data: FieldValues) {
+    try {
+      agent.Contacts.createContact(data);
+      toast.success("Message sent");
+      customHistory.push("/");
+    } catch (error) {
+      console.log(error);
+    }
   }
-  return (
-    <Container>
-      <Typography gutterBottom variant="h2">
-        Errors for testing purposes
-      </Typography>
-      <ButtonGroup fullWidth>
-        <Button
-          variant="contained"
-          onClick={() =>
-            agent.TestErrors.get400Error().catch((error) => console.log(error))
-          }
-        >
-          Test 400 Error
-        </Button>
-        <Button
-          variant="contained"
-          onClick={() =>
-            agent.TestErrors.get401Error().catch((error) => console.log(error))
-          }
-        >
-          Test 401 Error
-        </Button>
-        <Button
-          variant="contained"
-          onClick={() =>
-            agent.TestErrors.get404Error().catch((error) => console.log(error))
-          }
-        >
-          Test 404 Error
-        </Button>
-        <Button
-          variant="contained"
-          onClick={() =>
-            agent.TestErrors.get500Error().catch((error) => console.log(error))
-          }
-        >
-          Test 500 Error
-        </Button>
-        <Button variant="contained" onClick={getValidationError}>
-          Test Validation Error
-        </Button>
-      </ButtonGroup>
-      {validationErrors.length > 0 && (
-        <Alert severity="error">
-          <AlertTitle>Validation Errors</AlertTitle>
-          <List>
-            {validationErrors.map((error) => (
-              <ListItem key={error}>
-                <ListItemText>{error}</ListItemText>
-              </ListItem>
-            ))}
-          </List>
-        </Alert>
-      )}
-      <Divider />
-      <Typography variant="h2">{title}</Typography>
-      <Typography variant="h5">The data is: {data}</Typography>
 
-      <ButtonGroup>
-        <Button
-          onClick={() => dispatch(decrement(1))}
-          variant="contained"
-          color="error"
-        >
-          Decrement
-        </Button>
-        <Button
-          onClick={() => dispatch(increment(1))}
-          variant="contained"
-          color="primary"
-        >
-          Increment
-        </Button>
-        <Button
-          onClick={() => dispatch(increment(5))}
-          variant="contained"
-          color="primary"
-        >
-          Increment by 5
-        </Button>
-      </ButtonGroup>
-    </Container>
+  return (
+    <Box component={Paper} sx={{ p: 4 }}>
+      <Typography variant="h4" gutterBottom sx={{ mb: 4 }}>
+        Contact us
+      </Typography>
+      <form onSubmit={handleSubmit(handleSubmitData)}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={6}>
+            <AppTextInput control={control} name="subject" label="Subject" />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <AppTextInput
+              control={control}
+              name="email"
+              type="email"
+              label="Email"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <AppTextInput
+              control={control}
+              name="description"
+              label="Description"
+              multiline
+              rows={4}
+            />
+          </Grid>
+        </Grid>
+        <Box display="flex" justifyContent="space-between" sx={{ mt: 3 }}>
+          <LoadingButton
+            loading={isSubmitting}
+            type="submit"
+            variant="contained"
+            color="success"
+          >
+            Submit
+          </LoadingButton>
+        </Box>
+      </form>
+    </Box>
   );
 }
