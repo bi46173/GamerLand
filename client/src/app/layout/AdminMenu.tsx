@@ -3,12 +3,9 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
-import { useAppDispatch, useAppSelector } from "../store/configureStore";
 import { Link } from "react-router-dom";
 
 export default function AdminMenu() {
-  const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.account);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: any) => {
@@ -41,6 +38,9 @@ export default function AdminMenu() {
         </MenuItem>
         <MenuItem component={Link} to="/admin/contacts" onClick={handleClose}>
           Contacts
+        </MenuItem>
+        <MenuItem component={Link} to="/admin/tickets" onClick={handleClose}>
+          Tickets
         </MenuItem>
       </Menu>
     </>

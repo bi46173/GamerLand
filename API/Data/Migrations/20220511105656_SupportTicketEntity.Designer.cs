@@ -4,14 +4,16 @@ using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20220511105656_SupportTicketEntity")]
+    partial class SupportTicketEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -216,14 +218,14 @@ namespace API.Data.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "b8d08ad6-778f-40d1-9a00-531215ad7f56",
+                            ConcurrencyStamp = "4dc9829d-149a-40f2-89a3-a42215048448",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "9f80d8c9-95f6-45ba-ad1f-9d7d6e7cc6db",
+                            ConcurrencyStamp = "2ef0f24f-3112-4c4d-8fbb-32e64576ab4b",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -248,9 +250,6 @@ namespace API.Data.Migrations
                     b.Property<string>("Urgency")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("User")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.ToTable("SupportTickets");
@@ -262,9 +261,6 @@ namespace API.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("AdminReply")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Reply")
                         .HasColumnType("nvarchar(max)");

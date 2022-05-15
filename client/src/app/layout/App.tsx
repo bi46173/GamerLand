@@ -27,7 +27,11 @@ import Orders from "../../features/orders/Orders";
 import CheckoutWrapper from "../../features/checkout/CheckoutWrapper";
 import Inventory from "../../features/admin/Inventory";
 import AdminContacts from "../../features/admin/contacts/AdminContacts";
+import AdminTickets from "../../features/admin/tickets/AdminTickets";
+import AdminViewing from "../../features/admin/tickets/AdminViewing";
 import Dashboard from "../../features/admin/home/Dashboard";
+import Tickets from "../../features/support/Tickets";
+import Viewing from "../../features/support/Viewing";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -103,8 +107,33 @@ function App() {
             >
               <Route path="/admin/contacts" element={<AdminContacts />} />
             </Route>
+            <Route
+              path="/admin/tickets"
+              element={<PrivateRoute roles={["Admin"]} />}
+            >
+              <Route path="/admin/tickets" element={<AdminTickets />} />
+            </Route>
+            <Route
+              path="/admin/tickets/:id"
+              element={<PrivateRoute roles={["Admin"]} />}
+            >
+              <Route path="/admin/tickets/:id" element={<AdminViewing />} />
+            </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route
+              path="/support"
+              element={<PrivateRoute roles={["Member"]} />}
+            >
+              <Route path="/support" element={<Tickets />} />
+            </Route>
+            <Route
+              path="/support/:id"
+              element={<PrivateRoute roles={["Member"]} />}
+            >
+              <Route path="/support/:id" element={<Viewing />} />
+            </Route>
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Container>

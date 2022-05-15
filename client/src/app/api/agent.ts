@@ -96,6 +96,7 @@ const Admin = {
     requests.putForm("products", createFormData(product)),
   deleteProduct: (id: number) => requests.delete(`products/${id}`),
   listContacts: () => requests.get("contacts"),
+  listTickets: () => requests.get("supportTicket/getTicketsAdmin"),
 };
 
 const Catalog = {
@@ -142,6 +143,16 @@ const Contacts = {
   deleteContact: (id: number) => requests.delete(`contacts/${id}`),
 };
 
+const Support = {
+  listTickets: (user: string) =>
+    requests.get(`supportTicket/getTicketsByUser/${user}`),
+  deleteTicket: (id: number) => requests.delete(`supportTicket/${id}`),
+  openTicket: (values: any) =>
+    requests.post("supportTicket/openTicket", values),
+  getTicket: (id: number) => requests.get(`supportTicket/${id}`),
+  replyTicket: (values: any) => requests.post("supportTicket/reply", values),
+};
+
 const agent = {
   Catalog,
   TestErrors,
@@ -151,6 +162,7 @@ const agent = {
   Payments,
   Admin,
   Contacts,
+  Support,
 };
 
 export default agent;

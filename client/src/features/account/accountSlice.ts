@@ -61,11 +61,14 @@ export const accountSlice = createSlice({
     },
     setUser: (state, action) => {
       let claims = JSON.parse(window.atob(action.payload.token.split(".")[1]));
+      let user =
+        claims["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
       let roles =
         claims["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
       state.user = {
         ...action.payload,
         roles: typeof roles === "string" ? [roles] : roles,
+        user: user,
       };
     },
   },
@@ -86,9 +89,12 @@ export const accountSlice = createSlice({
           claims[
             "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
           ];
+        let user =
+          claims["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
         state.user = {
           ...action.payload,
           roles: typeof roles === "string" ? [roles] : roles,
+          user: user,
         };
       }
     );

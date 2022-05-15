@@ -23,6 +23,8 @@ namespace API.Data
 
         public DbSet<Contact> Contacts { get; set; }
 
+        public DbSet<SupportTicket> SupportTickets { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

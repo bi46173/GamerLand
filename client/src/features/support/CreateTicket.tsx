@@ -4,11 +4,12 @@ import { Box, Paper, Typography, Grid } from "@mui/material";
 import { FieldValues, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import agent from "../../app/api/agent";
+import AppSelectList from "../../app/components/AppSelectList";
 import AppTextInput from "../../app/components/AppTextInput";
 import { customHistory } from "../../app/layout/CustomBrowserRouter";
-import { validationSchema } from "../contact/contactValidation";
+import { validationSchema } from "./supportValidation";
 
-export default function ContactPage() {
+export default function CreateTicket() {
   const {
     control,
     handleSubmit,
@@ -19,8 +20,8 @@ export default function ContactPage() {
 
   async function handleSubmitData(data: FieldValues) {
     try {
-      agent.Contacts.createContact(data);
-      toast.success("Message sent");
+      agent.Support.openTicket(data);
+      toast.success("ticket created");
       customHistory.push("/");
     } catch (error) {
       console.log(error);
@@ -30,7 +31,7 @@ export default function ContactPage() {
   return (
     <Box component={Paper} sx={{ p: 4 }}>
       <Typography variant="h4" gutterBottom sx={{ mb: 4 }}>
-        Contact us
+        Open Ticket
       </Typography>
       <form onSubmit={handleSubmit(handleSubmitData)}>
         <Grid container spacing={3}>
@@ -38,18 +39,18 @@ export default function ContactPage() {
             <AppTextInput control={control} name="subject" label="Subject" />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <AppTextInput
+            <AppSelectList
               control={control}
-              name="email"
-              type="email"
-              label="Email"
+              name="urgency"
+              label="Urgency"
+              items={["Low", "Medium", "High"]}
             />
           </Grid>
           <Grid item xs={12}>
             <AppTextInput
               control={control}
-              name="description"
-              label="Description"
+              name="problem"
+              label="Issue"
               multiline
               rows={4}
             />
