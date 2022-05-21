@@ -38,7 +38,7 @@ export default function AdminViewing() {
       .then((response) => setTicket(response))
       .catch((error) => console.log(error))
       .finally(() => setLoading(false));
-  }, [triggerChange]);
+  }, [triggerChange, id]);
 
   async function handleSubmitData(data: FieldValues) {
     try {

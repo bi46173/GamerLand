@@ -25,6 +25,9 @@ namespace API.Data
 
         public DbSet<SupportTicket> SupportTickets { get; set; }
 
+        public DbSet<ProductRating> ProductRatings { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

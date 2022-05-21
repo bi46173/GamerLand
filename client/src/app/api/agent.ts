@@ -153,6 +153,12 @@ const Support = {
   replyTicket: (values: any) => requests.post("supportTicket/reply", values),
 };
 
+const Ratings = {
+  listRatings: (productId: number) =>
+    requests.get(`ProductRatings/${productId}`),
+  createRating: (values: any) => requests.post("productRatings", values),
+};
+
 const agent = {
   Catalog,
   TestErrors,
@@ -163,6 +169,7 @@ const agent = {
   Admin,
   Contacts,
   Support,
+  Ratings,
 };
 
 export default agent;
