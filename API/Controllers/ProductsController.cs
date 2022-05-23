@@ -133,5 +133,61 @@ namespace API.Controllers
 
             return BadRequest(new ProblemDetails { Title = "Problem deleting product" });
         }
+
+        [HttpGet("mostReviewed/{limit}")]
+        public async Task<ActionResult<List<ReviewedProduct>>> GetMostReviewed(int limit)
+        {
+            var ratedProducts = await _context.ProductRatings.Select(p => p.ProductId).Distinct().ToListAsync();
+            var items = new List<ReviewedProduct>();
+            var itemsToBeTaken = limit - ratedProducts.Count();
+            
+            if(ratedProducts == null || itemsToBeTaken > 0) 
+            {
+                var productsToBeReturned = await _context.Products.Where(x => !ratedProducts.Contains(x.Id)).OrderByDescending(p => p.Id).Take(itemsToBeTaken).ToListAsync();
+                foreach (var productToBeReturned in productsToBeReturned)
+                {
+                    var mappedItem = new ReviewedProduct{
+                        Id = productToBeReturned.Id,
+                        Name = productToBeReturned.Name,
+                        Information1 = productToBeReturned.Information1,
+                        Information2 = productToBeReturned.Information2,
+                        Information3 = productToBeReturned.Information3,
+                        Information4 = productToBeReturned.Information4,
+                        Price = productToBeReturned.Price,
+                        Type = productToBeReturned.Type,
+                        QuantityInStock = productToBeReturned.QuantityInStock,
+                        PictureUrl = productToBeReturned.PictureUrl,
+                        ReviewsNumber = 0,
+                        ReviewsAverage = 0,
+                    };
+                    items.Add(mappedItem);
+                }
+            }
+            
+            var reviewedProducts =  await _context.Products.Where(p => ratedProducts.Contains(p.Id)).ToListAsync();
+
+            foreach (var reviewedItem in reviewedProducts)
+            {
+                var productRatings = _context.ProductRatings.Where(p => p.ProductId == reviewedItem.Id);
+
+                var mappedItem = new ReviewedProduct{
+                    Id = reviewedItem.Id,
+                    Name = reviewedItem.Name,
+                    Information1 = reviewedItem.Information1,
+                    Information2 = reviewedItem.Information2,
+                    Information3 = reviewedItem.Information3,
+                    Information4 = reviewedItem.Information4,
+                    Price = reviewedItem.Price,
+                    Type = reviewedItem.Type,
+                    QuantityInStock = reviewedItem.QuantityInStock,
+                    PictureUrl = reviewedItem.PictureUrl,
+                    ReviewsNumber = productRatings.Count(),
+                    ReviewsAverage = productRatings.Average(p => p.Rating)
+                };
+                items.Add(mappedItem);
+            }
+
+            return items;
+        }
     }
 }

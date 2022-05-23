@@ -103,6 +103,8 @@ const Catalog = {
   list: (params: URLSearchParams) => requests.get("products", params),
   details: (id: number) => requests.get(`products/${id}`),
   fetchFilters: () => requests.get("products/filters"),
+  listReviewed: (limit: number) =>
+    requests.get(`Products/mostReviewed/${limit}`),
 };
 
 const TestErrors = {

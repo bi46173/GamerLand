@@ -58,6 +58,7 @@ export default function AdminTickets() {
           <TableHead>
             <TableRow>
               <TableCell>Ticket number</TableCell>
+              <TableCell>User</TableCell>
               <TableCell>Subject</TableCell>
               <TableCell>Urgency</TableCell>
               <TableCell>Date</TableCell>
@@ -73,6 +74,7 @@ export default function AdminTickets() {
                 <TableCell component="th" scope="row">
                   {ticket.id}
                 </TableCell>
+                <TableCell>{ticket.user}</TableCell>
                 <TableCell>{ticket.subject}</TableCell>
                 <TableCell>{ticket.urgency}</TableCell>
                 <TableCell>{ticket.ticketDate.split("T")[0]}</TableCell>
