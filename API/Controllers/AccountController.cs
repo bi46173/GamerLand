@@ -95,6 +95,53 @@ namespace API.Controllers
                             .FirstOrDefaultAsync();
         }
 
+        [Authorize]
+        [HttpPost("changePassword")]
+        public async Task<ActionResult> ChangePassword(ChangePasswordDto p)
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            if(user == null)
+                return Unauthorized();
+            if(p.NewPassword != p.ConfirmPassword)
+                return BadRequest(new ProblemDetails{Title="Passwords do not match"});
+            var result = await _userManager.ChangePasswordAsync(user,p.OldPassword,p.NewPassword);
+
+            if(!result.Succeeded)
+            {
+                foreach(var error in result.Errors)
+                {
+                    ModelState.AddModelError(error.Code,error.Description);
+                }
+                return ValidationProblem();
+            }
+
+            return Ok();
+            
+        }
+        [Authorize]
+        [HttpGet("GetPhoneNumber")]
+        public async Task<ActionResult<string>> GetPhoneNumber()
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            if(user == null)
+                return BadRequest();
+            if(user.PhoneNumber != null) return Ok(user.PhoneNumber);   
+            return NotFound();
+        }
+        [Authorize]
+        [HttpPost("UpdatePhoneNumber")]
+        public async Task<ActionResult> UpdatePhoneNumber(string phoneNumber)
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            if(user == null)
+                return BadRequest();
+            var result = await _userManager.SetPhoneNumberAsync(user,phoneNumber);
+            if(result.Succeeded) return StatusCode(201);
+
+            return BadRequest(new ProblemDetails{Title="Something went wrong"});
+
+        }
+
         private async Task<Basket> RetrieveBasket(string buyerId)
         {
             if(string.IsNullOrEmpty(buyerId))

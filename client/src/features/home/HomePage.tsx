@@ -25,15 +25,24 @@ export default function HomePage() {
         <EmojiEventsIcon color="warning" /> Most rated products
       </Typography>
       <Grid container spacing={4} sx={{ mb: 2 }}>
-        {products?.map((product) => (
-          <Grid item xs={3} key={product.id}>
-            {loading ? (
-              <ProductCardSkeleton />
-            ) : (
-              <ReviewedProduct product={product} />
-            )}
-          </Grid>
-        ))}
+        {loading && (
+          <>
+            {[...Array(4)].map((e, i) => (
+              <Grid item xs={3} key={i}>
+                <ProductCardSkeleton />
+              </Grid>
+            ))}
+          </>
+        )}
+        {!loading && (
+          <>
+            {products?.map((product) => (
+              <Grid item xs={3} key={product.id}>
+                <ReviewedProduct product={product} />
+              </Grid>
+            ))}
+          </>
+        )}
       </Grid>
     </>
   );

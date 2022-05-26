@@ -32,6 +32,7 @@ import AdminViewing from "../../features/admin/tickets/AdminViewing";
 import Dashboard from "../../features/admin/home/Dashboard";
 import Tickets from "../../features/support/Tickets";
 import Viewing from "../../features/support/Viewing";
+import ChangePassword from "../../features/account/ChangePassword";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -121,6 +122,12 @@ function App() {
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route
+              path="/changePassword"
+              element={<PrivateRoute roles={["Member"]} />}
+            >
+              <Route path="/changePassword" element={<ChangePassword />} />
+            </Route>
             <Route
               path="/support"
               element={<PrivateRoute roles={["Member"]} />}

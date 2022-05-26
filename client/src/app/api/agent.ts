@@ -128,6 +128,11 @@ const Account = {
   register: (values: any) => requests.post("account/register", values),
   currentUser: () => requests.get("account/currentUser"),
   fetchAddress: () => requests.get("account/savedAddress"),
+  changePassword: (values: any) =>
+    requests.post("account/changePassword", values),
+  getPhoneNumber: () => requests.get("account/GetPhoneNumber"),
+  updatePhoneNumber: (value: any) =>
+    requests.post(`Account/UpdatePhoneNumber?phoneNumber=${value}`, {}),
 };
 
 const Orders = {

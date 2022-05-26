@@ -4,7 +4,6 @@ import { FieldValues, useForm } from "react-hook-form";
 import AppDropzone from "../../app/components/AppDropzone";
 import AppSelectList from "../../app/components/AppSelectList";
 import AppTextInput from "../../app/components/AppTextInput";
-import useProducts from "../../app/hooks/useProducts";
 import { Product } from "../../app/models/product";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { validationSchema } from "./productValidation";
@@ -29,7 +28,6 @@ export default function ProductForm({ product, cancelEdit }: Props) {
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
-  const { types } = useProducts();
   const watchFile = watch("file", null);
 
   useEffect(() => {
@@ -113,7 +111,15 @@ export default function ProductForm({ product, cancelEdit }: Props) {
               control={control}
               label="Type"
               name="type"
-              items={types}
+              items={[
+                "Desktop",
+                "Laptop",
+                "Cpu",
+                "Ram",
+                "Gpu",
+                "Storage",
+                "Peripheral",
+              ]}
             />
           </Grid>
           <Grid item xs={12}>
